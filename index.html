@@ -4,6 +4,23 @@
 </a>
 <p> National Taiwan Normal University (NTNU) Notifier.</p>
 
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+
+<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+  <h3>Install</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-0">npm i ntnu-notifier</span>
+</code></pre>
+
+<a href="#javascript-or-typescript" id="javascript-or-typescript" style="color: inherit; text-decoration: none;">
+  <h3>JavaScript or TypeScript</h3>
+</a>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> { </span><span class="hl-2">CsieNotifier</span><span class="hl-0">, </span><span class="hl-2">Covid19Notifier</span><span class="hl-0"> } = </span><span class="hl-3">require</span><span class="hl-0">(</span><span class="hl-4">&quot;ntnu-notifier&quot;</span><span class="hl-0">);</span><br/><span class="hl-5">// import { CsieNotifier, Covid19Notifier } from &quot;ntnu-notifier&quot;;</span><br/><br/><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">notifier1</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">CsieNotifier</span><span class="hl-0">();</span><br/><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">notifier2</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">Covid19Notifier</span><span class="hl-0">();</span><br/><br/><span class="hl-6">notifier1</span><span class="hl-0">.</span><span class="hl-3">on</span><span class="hl-0">(</span><span class="hl-4">&quot;notify&quot;</span><span class="hl-0">, </span><span class="hl-1">async</span><span class="hl-0"> (</span><span class="hl-6">notifier</span><span class="hl-0">, </span><span class="hl-6">news</span><span class="hl-0">) </span><span class="hl-1">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-6">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-6">notifier</span><span class="hl-0">, </span><span class="hl-6">news</span><span class="hl-0">);</span><br/><span class="hl-0">});</span><br/><br/><span class="hl-6">notifier2</span><span class="hl-0">.</span><span class="hl-3">on</span><span class="hl-0">(</span><span class="hl-4">&quot;notify&quot;</span><span class="hl-0">, </span><span class="hl-1">async</span><span class="hl-0"> (</span><span class="hl-6">notifier</span><span class="hl-0">, </span><span class="hl-6">news</span><span class="hl-0">) </span><span class="hl-1">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-6">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-6">notifier</span><span class="hl-0">, </span><span class="hl-6">news</span><span class="hl-0">);</span><br/><span class="hl-0">});</span><br/><br/><span class="hl-6">notifier1</span><span class="hl-0">.</span><span class="hl-3">start</span><span class="hl-0">();</span><br/><span class="hl-6">notifier2</span><span class="hl-0">.</span><span class="hl-3">start</span><span class="hl-0">();</span>
+</code></pre>
+<p>More Details: <a href="https://jacoblincool.github.io/ntnu-notifier/">Documentation</a>.</p>
+
 <a href="#availible-notifiers" id="availible-notifiers" style="color: inherit; text-decoration: none;">
   <h2>Availible Notifiers</h2>
 </a>
