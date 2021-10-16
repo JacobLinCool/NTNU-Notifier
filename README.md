@@ -5,3 +5,4 @@
 ## Availible Notifiers
 
 * CSIE Notifier (CsieNotifier)
+* COVID19 Notifier (Covid19Notifier)
