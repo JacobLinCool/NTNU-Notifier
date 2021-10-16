@@ -1,4 +1,4 @@
-import { Covid19Notifier } from "../src";
+import { Covid19Notifier } from "../lib";
 
 const notifier = new Covid19Notifier();
 

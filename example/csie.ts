@@ -1,4 +1,4 @@
-import { CsieNotifier } from "../src";
+import { CsieNotifier } from "../lib";
 
 const notifier = new CsieNotifier();
 
