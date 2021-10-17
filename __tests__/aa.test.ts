@@ -1,7 +1,7 @@
-import { CsieNotifier } from "../src";
+import { AaNotifier } from "../src";
 
-test("CSIE Notifier on Notify", async () => {
-    const notifier = new CsieNotifier();
+test("Academic Affairs Notifier on Notify", async () => {
+    const notifier = new AaNotifier();
 
     const waiter = new Promise((resolve) => {
         let i = 0;
@@ -21,8 +21,8 @@ test("CSIE Notifier on Notify", async () => {
     notifier.stop();
 });
 
-test("CSIE Notifier listen Notify", async () => {
-    const notifier = new CsieNotifier();
+test("Academic Affairs Notifier listen Notify", async () => {
+    const notifier = new AaNotifier();
 
     const waiter = new Promise((resolve) => {
         let i = 0;

@@ -1,7 +1,7 @@
-import { CsieNotifier } from "../src";
+import { Covid19Notifier } from "../src";
 
-test("CSIE Notifier on Notify", async () => {
-    const notifier = new CsieNotifier();
+test("Covid19 Notifier on Notify", async () => {
+    const notifier = new Covid19Notifier();
 
     const waiter = new Promise((resolve) => {
         let i = 0;
@@ -12,7 +12,7 @@ test("CSIE Notifier on Notify", async () => {
             expect(news.date instanceof Date).toBe(true);
             expect(Array.isArray(news.type)).toBe(true);
             i++;
-            if (i === 10) resolve(1);
+            if (i === 15) resolve(1);
         });
     });
 
@@ -21,8 +21,8 @@ test("CSIE Notifier on Notify", async () => {
     notifier.stop();
 });
 
-test("CSIE Notifier listen Notify", async () => {
-    const notifier = new CsieNotifier();
+test("Covid19 Notifier listen Notify", async () => {
+    const notifier = new Covid19Notifier();
 
     const waiter = new Promise((resolve) => {
         let i = 0;
@@ -33,7 +33,7 @@ test("CSIE Notifier listen Notify", async () => {
             expect(news.date instanceof Date).toBe(true);
             expect(Array.isArray(news.type)).toBe(true);
             i++;
-            if (i === 10) resolve(1);
+            if (i === 15) resolve(1);
         });
     });
 
