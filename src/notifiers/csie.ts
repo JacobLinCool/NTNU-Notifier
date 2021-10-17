@@ -10,7 +10,7 @@ async function checkout() {
     const $ = cheerio.load(await res.text());
     const news: News[] = [];
     $("article").each((idx, elm) => {
-        const a = $(elm).find("a");
+        const a = $(elm).find("a").first();
         if (a) {
             const url = a.attr("href");
             const title = a.text();
