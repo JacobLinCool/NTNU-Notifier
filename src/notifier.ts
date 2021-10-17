@@ -1,41 +1,47 @@
-import { NotifierEvent, Initialize, Check, Notify } from "./types";
+import { NotifierEvent, NotifierHandlerSet, Initialize, Check, Notify, News } from "./types";
 
 class Notifier {
     public name = "";
-
-    protected memory: any[] = [];
-
-    protected interval: number = 60 * 1000;
-
-    private intervalID: NodeJS.Timer | null = null;
-
-    protected _init: Initialize = (notifier?: Notifier) => {
-        this.log("init", notifier);
-    };
-
-    protected _check: Check = (notifier?: Notifier) => {
-        this.log("check", notifier);
-    };
-
-    protected _notify: Notify = (notifier?: Notifier) => {
-        this.log("notify", notifier);
+    private _interval: number = 60 * 1000;
+    private _intervalID: NodeJS.Timer | null = null;
+    public handlers: NotifierHandlerSet = {
+        init: [],
+        check: [],
+        notify: [],
     };
 
     public async start(): Promise<void> {
         const self = this;
-        await this._init(this);
-        this._check(this);
-        this.intervalID = setInterval(() => self._check(self), self.interval);
+        await Promise.all(this.handlers.init.map((handler) => handler(self)));
+        Promise.all(this.handlers.check.map((handler) => handler(self)));
+        this._intervalID = setInterval(() => Promise.all(this.handlers.check.map((handler) => handler(self))), this._interval);
     }
 
     public stop(): void {
-        if (this.intervalID) clearInterval(this.intervalID);
+        if (this._intervalID) clearInterval(this._intervalID);
+    }
+
+    public listen(event: NotifierEvent, handler: Initialize | Check | Notify): Notifier {
+        if (event === "init") this.handlers.init.push(handler as Initialize);
+        if (event === "check") this.handlers.check.push(handler as Check);
+        if (event === "notify") this.handlers.notify.push(handler as Notify);
+        return this;
     }
 
     public on(event: NotifierEvent, handler: Initialize | Check | Notify): Notifier {
-        if (event === "init") this._init = handler as Initialize;
-        if (event === "check") this._check = handler as Check;
-        if (event === "notify") this._notify = handler as Notify;
+        if (event === "init") this.handlers.init = [handler as Initialize];
+        if (event === "check") this.handlers.check = [handler as Check];
+        if (event === "notify") this.handlers.notify = [handler as Notify];
+        return this;
+    }
+
+    public async notify(news: News): Promise<void> {
+        const self = this;
+        await Promise.all(this.handlers.notify.map((handler) => handler(self, news)));
+    }
+
+    public setInterval(interval: number): Notifier {
+        this._interval = interval;
         return this;
     }
 
