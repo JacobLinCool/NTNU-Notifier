@@ -1,6 +1,6 @@
-import { CsieNotifier } from "../lib";
+import { AaNotifier } from "../lib";
 
-const notifier = new CsieNotifier();
+const notifier = new AaNotifier();
 
 notifier.listen("notify", (noti, news) => {
     console.log(noti.name, news);

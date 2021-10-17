@@ -2,7 +2,7 @@ import { Covid19Notifier } from "../lib";
 
 const notifier = new Covid19Notifier();
 
-notifier.on("notify", (noti, news) => {
+notifier.listen("notify", (noti, news) => {
     console.log(noti.name, news);
 });
 
