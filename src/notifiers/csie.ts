@@ -26,22 +26,24 @@ async function checkout() {
     return news;
 }
 
+async function check(notifier: CsieNotifier) {
+    const news = await checkout();
+    const newNews = news.filter((x) => !notifier.memory.find((y) => y.url === x.url));
+    for (let i = newNews.length - 1; i >= 0; i--) {
+        notifier.memory.push(newNews[i]);
+        notifier.notify(newNews[i]);
+    }
+    while (notifier.memory.length > 10) notifier.memory.shift();
+}
+
+/** CsieNotifier 的資料來源是 https://www.csie.ntnu.edu.tw/index.php/category/news/announcement/ */
 class CsieNotifier extends Notifier {
+    public memory: News[] = [];
+
     constructor() {
         super();
         this.name = "CSIE-Notifier";
-        this.on("init", () => {});
-        this.on("check", this.check);
-    }
-
-    async check() {
-        const news = await checkout();
-        const newNews = news.filter((x) => !this.memory.find((y) => y.url === x.url));
-        for (let i = newNews.length - 1; i >= 0; i--) {
-            this.memory.push(newNews[i]);
-            this._notify(this, newNews[i]);
-        }
-        while (this.memory.length > 10) this.memory.shift();
+        this.on("check", () => check(this));
     }
 
     recall(news: News[]): Notifier {
