@@ -1,6 +1,6 @@
 {
     "name": "ntnu-notifier",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "National Taiwan Normal University (NTNU) Notifier.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -9,10 +9,11 @@
     ],
     "scripts": {
         "start": "ts-node -- ./src/",
+        "test": "jest --coverage",
+        "prepare": "npm run build",
         "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/",
-        "build": "tsc",
+        "build": "npm run format && tsc",
         "doc": "typedoc ./src/",
-        "test": "jest --coverage --detectOpenHandles --silent=false",
         "format": "prettier --write \"src/**/*.ts\""
     },
     "keywords": [
@@ -38,5 +39,13 @@
         "ts-node": "^10.3.0",
         "typedoc": "^0.22.5",
         "typescript": "^4.4.4"
+    },
+    "bugs": {
+      "url": "https://github.com/JacobLinCool/NTNU-Notifier/issues"
+    },
+    "homepage": "https://github.com/JacobLinCool/NTNU-Notifier#readme",
+    "repository": {
+      "type": "git",
+      "url": "git+ssh://git@github.com/JacobLinCool/NTNU-Notifier.git"
     }
 }
