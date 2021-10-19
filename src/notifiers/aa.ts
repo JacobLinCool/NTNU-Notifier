@@ -43,7 +43,7 @@ class AaNotifier extends Notifier {
     }
 
     recall(news: News[]): Notifier {
-        this.memory = news;
+        this.memory = [...news];
         return this;
     }
 }
