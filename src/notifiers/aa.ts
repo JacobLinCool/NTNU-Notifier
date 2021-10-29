@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import cheerio from "cheerio";
 
 const NEWS_URL = "https://www.aa.ntnu.edu.tw/news/news.php?class=1101";
+const MEM_SIZE = 10 + 2;
 
 async function checkout() {
     const res = await fetch(NEWS_URL);
@@ -29,7 +30,7 @@ async function check(notifier: AaNotifier) {
         notifier.memory.push(newNews[i]);
         notifier.notify(newNews[i]);
     }
-    while (notifier.memory.length > 10) notifier.memory.shift();
+    while (notifier.memory.length > MEM_SIZE) notifier.memory.shift();
 }
 
 /** AaNotifier 的資料來源是 https://www.aa.ntnu.edu.tw/news/news.php?class=1101 */

@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import cheerio from "cheerio";
 
 const NTNU_CSIE_NEWS_URL = "https://www.csie.ntnu.edu.tw/index.php/category/news/announcement/";
+const MEM_SIZE = 10 + 2;
 
 async function checkout() {
     const res = await fetch(NTNU_CSIE_NEWS_URL);
@@ -33,7 +34,7 @@ async function check(notifier: CsieNotifier) {
         notifier.memory.push(newNews[i]);
         notifier.notify(newNews[i]);
     }
-    while (notifier.memory.length > 10) notifier.memory.shift();
+    while (notifier.memory.length > MEM_SIZE) notifier.memory.shift();
 }
 
 /** CsieNotifier 的資料來源是 https://www.csie.ntnu.edu.tw/index.php/category/news/announcement/ */

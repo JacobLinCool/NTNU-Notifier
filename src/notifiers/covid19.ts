@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import cheerio from "cheerio";
 
 const COVID19_NEWS_URL = "https://covid19.ntnu.edu.tw/news_listV2.php";
+const MEM_SIZE = 15 + 2;
 
 async function checkout() {
     const res = await fetch(COVID19_NEWS_URL);
@@ -36,7 +37,7 @@ async function check(notifier: Covid19Notifier) {
         notifier.memory.push(newNews[i]);
         notifier.notify(newNews[i]);
     }
-    while (notifier.memory.length > 15) notifier.memory.shift();
+    while (notifier.memory.length > MEM_SIZE) notifier.memory.shift();
 }
 
 /** Covid19Notifier 的資料來源是 https://covid19.ntnu.edu.tw/news_listV2.php */
