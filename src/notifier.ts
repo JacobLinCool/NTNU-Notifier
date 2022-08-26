@@ -1,5 +1,13 @@
 import { DEFAULT_MEM_SIZE, DEFAULT_INTERVAL } from "./constants";
-import { NotifierEvent, NotifierHandlerSet, Initialize, Check, Notify, News } from "./types";
+import {
+    NotifierEvent,
+    NotifierHandlerSet,
+    Initialize,
+    Check,
+    Notify,
+    News,
+    FirstShot,
+} from "./types";
 
 class Notifier {
     public name = "";
@@ -7,6 +15,7 @@ class Notifier {
         init: [],
         check: [],
         notify: [],
+        first: [],
     };
     protected _memory: News[] = [];
     protected _size: number;
@@ -27,10 +36,12 @@ class Notifier {
         this._interval = interval;
     }
 
-    public async start(): Promise<void> {
+    public async start(): Promise<News[]> {
         await Promise.all(this.handlers.init.map((handler) => handler(this)));
         this._timer = setInterval(() => this.check(), this._interval);
-        this.check();
+        const diff = await this.check();
+        await Promise.all(this.handlers.first.map((handler) => handler(this, diff)));
+        return diff;
     }
 
     public stop(): void {
@@ -52,29 +63,34 @@ class Notifier {
     public on(event: "init", handler: Initialize): this;
     public on(event: "check", handler: Check): this;
     public on(event: "notify", handler: Notify): this;
-    public on(event: NotifierEvent, handler: Initialize | Check | Notify): this {
+    public on(event: "first", handler: FirstShot): this;
+    public on(event: NotifierEvent, handler: Initialize | Check | Notify | FirstShot): this {
         if (event === "init") {
             this.handlers.init.push(handler as Initialize);
         } else if (event === "check") {
             this.handlers.check.push(handler as Check);
         } else if (event === "notify") {
             this.handlers.notify.push(handler as Notify);
+        } else if (event === "first") {
+            this.handlers.first.push(handler as FirstShot);
         } else throw new Error(`Unknown event: ${event}`);
         return this;
     }
 
-    private async check(): Promise<void> {
+    private async check(): Promise<News[]> {
         try {
             const results = (await Promise.all(this.handlers.check.map((handler) => handler(this))))
                 .flat()
                 .filter((x) => !this._memory.find((y) => y.id === x.id));
             for (let i = results.length - 1; i >= 0; i--) {
                 this._memory.push(results[i]);
-                this.notify(results[i]);
+                await this.notify(results[i]);
             }
             while (this._memory.length > this._size) this._memory.shift();
+            return results;
         } catch (err) {
             this.log(err);
+            return [];
         }
     }
 
