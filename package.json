@@ -10,7 +10,6 @@
     ],
     "scripts": {
         "test": "jest --coverage",
-        "prepare": "npm run build",
         "build": "tsup",
         "doc": "typedoc src",
         "format": "prettier --write 'src/**/*.ts'",
