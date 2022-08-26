@@ -2,7 +2,7 @@ const { AaNotifier } = require("../lib");
 
 const notifier = new AaNotifier();
 
-notifier.listen("notify", (noti, news) => {
+notifier.on("notify", (noti, news) => {
     console.log(noti.name, news);
 });
 

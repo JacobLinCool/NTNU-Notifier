@@ -2,7 +2,7 @@ const { CsieNotifier } = require("../lib");
 
 const notifier = new CsieNotifier();
 
-notifier.listen("notify", (noti, news) => {
+notifier.on("notify", (noti, news) => {
     console.log(noti.name, news);
 });
 
