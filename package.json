@@ -48,6 +48,6 @@
     "homepage": "https://github.com/JacobLinCool/NTNU-Notifier#readme",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/JacobLinCool/NTNU-Notifier.git"
+        "url": "git+https://github.com/JacobLinCool/NTNU-Notifier.git"
     }
 }
