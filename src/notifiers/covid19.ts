@@ -1,12 +1,11 @@
 import { News } from "../types";
 import Notifier from "../notifier";
 import fetch from "node-fetch";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 
 const COVID19_NEWS_URL = "https://covid19.ntnu.edu.tw/news_listV2.php";
-const MEM_SIZE = 15 + 2;
 
-async function checkout() {
+async function checkout(): Promise<News[]> {
     const res = await fetch(COVID19_NEWS_URL);
     const $ = cheerio.load(await res.text());
     const news: News[] = [];
@@ -17,42 +16,26 @@ async function checkout() {
     });
 
     await Promise.all(
-        links.map(async (url) => {
-            const res = await fetch("https://covid19.ntnu.edu.tw/" + url);
+        links.map(async (path) => {
+            const url = "https://covid19.ntnu.edu.tw/" + path;
+            const res = await fetch(url);
             const $ = cheerio.load(await res.text());
             const title = $("table tr:nth-child(1) > td").text().trim();
             const date = new Date($("table tr:nth-child(2) > td").text());
             const type = $("table tr:nth-child(3) > td").text().trim().split(" ");
-            news.push({ title, url, date, type });
+            news.push({ id: title, title, url, date, type });
         }),
     );
 
     return news.sort((a, b) => b.date.getTime() - a.date.getTime());
 }
 
-async function check(notifier: Covid19Notifier) {
-    const news = await checkout();
-    const newNews = news.filter((x) => !notifier.memory.find((y) => y.url === x.url));
-    for (let i = newNews.length - 1; i >= 0; i--) {
-        notifier.memory.push(newNews[i]);
-        notifier.notify(newNews[i]);
-    }
-    while (notifier.memory.length > MEM_SIZE) notifier.memory.shift();
-}
-
 /** Covid19Notifier 的資料來源是 https://covid19.ntnu.edu.tw/news_listV2.php */
 class Covid19Notifier extends Notifier {
-    public memory: News[] = [];
-
-    constructor() {
-        super();
+    constructor(storage?: string, size?: number, interval?: number) {
+        super(storage, size, interval);
         this.name = "Covid19-Notifier";
-        this.on("check", () => check(this));
-    }
-
-    recall(news: News[]): Notifier {
-        this.memory = [...news];
-        return this;
+        this.on("check", checkout);
     }
 }
 
