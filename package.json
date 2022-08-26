@@ -9,10 +9,8 @@
         "lib"
     ],
     "scripts": {
-        "start": "tsx src",
         "test": "jest --coverage",
         "prepare": "npm run build",
-        "dev": "tsx watch src",
         "build": "tsup",
         "doc": "typedoc src",
         "format": "prettier --write 'src/**/*.ts'",

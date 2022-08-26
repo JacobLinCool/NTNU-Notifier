@@ -11,10 +11,12 @@ class Notifier {
     };
 
     public async start(): Promise<void> {
-        const self = this;
-        await Promise.all(this.handlers.init.map((handler) => handler(self)));
-        Promise.all(this.handlers.check.map((handler) => handler(self)));
-        this._intervalID = setInterval(() => Promise.all(this.handlers.check.map((handler) => handler(self))), this._interval);
+        await Promise.all(this.handlers.init.map((handler) => handler(this)));
+        Promise.all(this.handlers.check.map((handler) => handler(this)));
+        this._intervalID = setInterval(
+            () => Promise.all(this.handlers.check.map((handler) => handler(this))),
+            this._interval,
+        );
     }
 
     public stop(): void {
@@ -36,8 +38,7 @@ class Notifier {
     }
 
     public async notify(news: News): Promise<void> {
-        const self = this;
-        await Promise.all(this.handlers.notify.map((handler) => handler(self, news)));
+        await Promise.all(this.handlers.notify.map((handler) => handler(this, news)));
     }
 
     public setInterval(interval: number): Notifier {
@@ -45,7 +46,7 @@ class Notifier {
         return this;
     }
 
-    protected log(...data: any[]) {
+    protected log(...data: unknown[]): void {
         console.log(`[Notifier ${this.name}]`, ...data);
     }
 }

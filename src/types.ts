@@ -10,9 +10,9 @@ export interface News {
     type?: string[];
 }
 
-export type Initialize = (notifier: Notifier) => any;
-export type Check = (notifier: Notifier) => any;
-export type Notify = (notifier: Notifier, news: News) => any;
+export type Initialize = (notifier: Notifier) => unknown;
+export type Check = (notifier: Notifier) => unknown;
+export type Notify = (notifier: Notifier, news: News) => unknown;
 
 export interface NotifierHandlerSet {
     init: Initialize[];
