@@ -32,7 +32,7 @@ async function checkout(): Promise<News[]> {
 
 /** Covid19Notifier 的資料來源是 https://covid19.ntnu.edu.tw/news_listV2.php */
 class Covid19Notifier extends Notifier {
-    constructor(storage?: string, size?: number, interval?: number) {
+    constructor(storage?: News[], size?: number, interval?: number) {
         super(storage, size, interval);
         this.name = "Covid19-Notifier";
         this.on("check", checkout);

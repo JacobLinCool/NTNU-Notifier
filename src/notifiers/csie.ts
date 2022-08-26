@@ -28,7 +28,7 @@ async function checkout(): Promise<News[]> {
 
 /** CsieNotifier 的資料來源是 https://www.csie.ntnu.edu.tw/index.php/category/news/announcement/ */
 class CsieNotifier extends Notifier {
-    constructor(storage?: string, size?: number, interval?: number) {
+    constructor(storage?: News[], size?: number, interval?: number) {
         super(storage, size, interval);
         this.name = "CSIE-Notifier";
         this.on("check", checkout);

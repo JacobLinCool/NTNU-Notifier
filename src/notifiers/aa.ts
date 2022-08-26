@@ -24,7 +24,7 @@ async function checkout(): Promise<News[]> {
 
 /** AaNotifier 的資料來源是 https://www.aa.ntnu.edu.tw/news/news.php?class=1101 */
 class AaNotifier extends Notifier {
-    constructor(storage?: string, size?: number, interval?: number) {
+    constructor(storage?: News[], size?: number, interval?: number) {
         super(storage, size, interval);
         this.name = "Academic-Affairs-Notifier";
         this.on("check", checkout);

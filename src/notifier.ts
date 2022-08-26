@@ -1,4 +1,3 @@
-import { mapping } from "file-mapping";
 import { DEFAULT_MEM_SIZE, DEFAULT_INTERVAL } from "./constants";
 import { NotifierEvent, NotifierHandlerSet, Initialize, Check, Notify, News } from "./types";
 
@@ -14,9 +13,15 @@ class Notifier {
     protected _interval: number;
     protected _timer?: NodeJS.Timer;
 
-    constructor(storage?: string, size = DEFAULT_MEM_SIZE, interval = DEFAULT_INTERVAL) {
-        if (storage) {
-            this._memory = mapping(storage, []);
+    /**
+     * Create a new Notifier instance.
+     * @param storage A reference to the News memory array.
+     * @param size The maximum number of news to keep in memory.
+     * @param interval The interval in milliseconds to check for new news.
+     */
+    constructor(storage?: News[], size = DEFAULT_MEM_SIZE, interval = DEFAULT_INTERVAL) {
+        if (Array.isArray(storage)) {
+            this._memory = storage;
         }
         this._size = size;
         this._interval = interval;
@@ -35,8 +40,12 @@ class Notifier {
         }
     }
 
+    /**
+     * Add a news item to the memory array. Notify triggers will not be fired.
+     * @param news List of news to add to the memory.
+     */
     public recall(news: News[]): this {
-        this._memory = [...news];
+        this._memory.push(...news);
         return this;
     }
 
@@ -51,11 +60,6 @@ class Notifier {
         } else if (event === "notify") {
             this.handlers.notify.push(handler as Notify);
         } else throw new Error(`Unknown event: ${event}`);
-        return this;
-    }
-
-    public setInterval(interval: number): Notifier {
-        this._interval = interval;
         return this;
     }
 
