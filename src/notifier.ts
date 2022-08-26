@@ -24,7 +24,7 @@ class Notifier {
 
     public async start(): Promise<void> {
         await Promise.all(this.handlers.init.map((handler) => handler(this)));
-        this._timer = setInterval(this.check, this._interval);
+        this._timer = setInterval(() => this.check(), this._interval);
         this.check();
     }
 
